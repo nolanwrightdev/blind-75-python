@@ -1,0 +1,3 @@
+* Blind 75 (Python)
+
+My solutions to [[https://www.teamblind.com/about][Blind]]'s curated list of [[https://leetcode.com/list/xoqag3yj/][75 LeetCode questions]].
