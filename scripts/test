@@ -1,0 +1,8 @@
+#!/bin/sh
+if test $1
+then
+	FILE="tests/test_problem$(printf %02d $1).py"
+	python -m unittest $FILE
+else
+	python -m unittest discover
+fi
