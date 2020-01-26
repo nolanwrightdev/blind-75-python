@@ -16,23 +16,21 @@ characters.
 
 def solution(s):
 	'''
-	While iterating through the input string, maintain 1) a window of adjacent
-	characters which are all unique, and 2) a map of characters in the window to
-	their positions therein. If a character which already exists in the window
-	is encountered, record the size of the window, drop from the window all
-	characters up to and including the prior occurence of the encountered
-	character, and adjust the map accordingly.
+	While iterating through the input string, maintain 1) a starting index since
+	which no duplicate characters have been encountered, and 2) a map of
+	characters to their most-recently encountered indices in the input string. If
+	a character is encountered which already exists in the map and whose
+	most-recent index occurs after the starting index, record the number of
+	characters from the starting index to this character's index, and update the
+	starting index to be one after the character's last occurence.
 	'''
 	max_length = 0
-	window = []
-	chars_in_window = {}
-	for char in s:
-		if char in chars_in_window:
-			max_length = max(len(window), max_length)
-			window = window[chars_in_window[char]:]
-			chars_in_window = {}
-			for index, char_w in enumerate(window, 1):
-				chars_in_window[char_w] = index
-		window.append(char)
-		chars_in_window[char] = len(window)
-	return max(len(window), max_length)
+	start = 0
+	char_pos = {}
+	for pos, char in enumerate(s):
+		last = char_pos.get(char, -1)
+		if last >= start:
+			max_length = max(max_length, pos - start)
+			start = last + 1
+		char_pos[char] = pos
+	return max(max_length, len(s) - start)
