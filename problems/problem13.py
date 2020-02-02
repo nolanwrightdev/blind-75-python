@@ -15,20 +15,16 @@ Given an array of strings, group anagrams together.
 
 def solution(strs):
 	'''
-	Sort each string. Find the frequencies of each character in each string. Use a
-	hash map to collect anagrams by common frequencies.
+	Assume all strings are composed solely of characters which are in the English
+	alphabet and are lower case. For each string, initialize an array of length
+	twenty-six and use it to count the frequencies of each character. Use a hash
+	map to collect anagrams by common frequencies.
 	'''
 	anagrams = {}
 	for s in strs:
-		chars, i, frequencies = sorted(s), 0, []
-		while i < len(chars):
-			j = i + 1
-			while j < len(chars) and chars[j] == chars[i]:
-				j += 1
-			frequencies += [chars[i], j - i]
-			i = j
-		tup = tuple(frequencies)
-		lst = anagrams.get(tup, [])
-		lst.append(s)
-		anagrams[tup] = lst
+		characters = [0] * 26
+		for char in s:
+			characters[ord(char) - ord('a')] += 1
+		tup = tuple(characters)
+		anagrams[tup] = anagrams.get(tup, []) + [s]
 	return anagrams.values()
