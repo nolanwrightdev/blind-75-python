@@ -16,6 +16,7 @@ Solve it without using division.
 [1]: https://leetcode.com/problems/product-of-array-except-self/
 '''
 
+
 def solution(nums):
 	'''
 	Find the cumulative products going from left to right. Find the cumulative
@@ -23,15 +24,14 @@ def solution(nums):
 	particular number, multiply the cumulative products reached from either side
 	of that number.
 	'''
-	left_to_right = [1]
-	for num in nums:
-		left_to_right.append(left_to_right[-1] * num)
+	output = [1]
+	for num in nums[:-1]:
+		output.append(output[-1] * num)
 
-	right_to_left = [1]
-	for num in nums[::-1]:
-		right_to_left.append(right_to_left[-1] * num)
+	right_to_left = 1
 
-	output = []
-	for i in range(len(nums)):
-		output.append(left_to_right[i] * right_to_left[len(nums) - 1 - i])
+	for i in range(len(nums) - 1, -1, -1):
+		output[i] = output[i] * right_to_left
+		right_to_left *= nums[i]
+
 	return output
