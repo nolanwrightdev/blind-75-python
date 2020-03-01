@@ -22,42 +22,22 @@ can be found after performing the operations.
 
 def solution(s, k):
 	'''
-	Find the indices of all characters in the string. For each character, use the
-	sliding window technique with its indices to find the length of the longest
-	substring matching the desired criteria.
+	Use the sliding window technique. While keeping track of the frequency of the
+	most frequent character, expand the window as much as possible. If the window
+	becomes invalid, slide it over until it is once again valid and continue
+	expanding while it remains valid.
 	'''
-	if k >= len(s):
-		return len(s)
-
-	cps = [[] for _ in range(26)]
-	for i, char in enumerate(s):
-		cps[ord(char) - ord('A')].append(i)
-
-	longest = k
-	for cp in cps:
-		if not cp:
-			continue
-
-		left = right = 0
-		kloop = k
-		length = 1
-		while right < len(cp):
-			while right + 1 < len(cp) and\
-               cp[right + 1] - cp[right] - 1 <= kloop:
-				kloop -= cp[right + 1] - cp[right] - 1
-				length += cp[right + 1] - cp[right]
-				right += 1
-
-			longest = max(longest, length + kloop)
-			if right == len(cp) - 1:
-				break
-
-			while left < right and cp[right + 1] - cp[right] - 1 > kloop:
-				kloop += cp[left + 1] - cp[left] - 1
-				length -= cp[left + 1] - cp[left]
-				left += 1
-
-			if left == right:
-				left = right = right + 1
-
-	return min(longest, len(s))
+	max_length = 0
+	max_count = 0
+	counts = [0] * 26
+	start = 0
+	for end in range(len(s)):
+		ind = ord(s[end]) - ord('A')
+		counts[ind] += 1
+		max_count = max(max_count, counts[ind])
+		if end - start + 1 - max_count > k:
+			counts[ord(s[start]) - ord('A')] -= 1
+			start += 1
+		else:
+			max_length = max(max_length, end - start + 1)
+	return max_length
